@@ -1,0 +1,29 @@
+#!/bin/bash
+
+output=$(dbus-send --reply-timeout=1000 --print-reply --dest=org.mpris.MediaPlayer2.spotifyd /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:'Metadata' \
+  | grep -Ev "^method" \
+  | grep -Eo '("(.*)")|(\b[0-9][a-zA-Z0-9.]*\b)' \
+  | sed -E '2~2 a|' \
+  | tr -d '\n' \
+  | sed -E 's/\|/\n/g' \
+  | sed -E 's/(xesam:)|(mpris:)//' \
+  | sed -E 's/^"//' \
+  | sed -E 's/"$//' \
+  | sed -E 's/"+/|/' \
+  | sed -E 's/ +/ /g' \
+  | grep --color=never -E "(title)|(albumArtist)|(length)" \
+  | sed 's/albumArtist/1/;s/title/2/;s/length/3/' \
+  | sort \
+  | sed 's/[0-9]|//')
+
+if ! [ -z "$output" ]; then
+  duration=$(date -d@$(bc -l <<< "scale=2;$(echo "$output" | sed 3'!d')/1000000") -u +%M:%S)
+  artist=$(echo "$output" | sed 1'!d')
+  track=$(echo "$output" | sed 2'!d')
+  trim="$artist - $track"
+  if [ $(echo "$trim" | wc -c) -gt 32 ]; then
+    trim="$(echo "$trim" | cut -c 1-32)…"
+  fi
+  echo "$trim  $duration"  
+else echo "Failed" 1>&2
+fi

@@ -1,0 +1,26 @@
+@media (max-width: 992px) {
+    h2[class^="membersGroup"], div[class^="sidebar"], div[class^="membersWrap"] {
+        transition: .3s
+    }
+    
+    h2[class^="membersGroup"] {
+        height: 0;
+    }
+    
+    div[class^="membersWrap"]:hover h2[class^="membersGroup"] {
+        height: 40px;
+    }
+    
+    div[class^="sidebar"], div[class^="membersWrap"] {
+        width: 50px;
+        min-width: unset;
+    }
+    
+    div[class^="member"] {
+        margin-left: 0;
+    }
+
+    div[class^="sidebar"]:hover, div[class^="membersWrap"]:hover {
+        width: 200px;
+    }
+}

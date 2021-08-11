@@ -1,0 +1,16 @@
+body {
+    --avatar-url: none !important;
+}
+
+div[aria-label="Show less"]{
+  display: none !important;
+}
+
+/*.mx_RoomSublist:nth-child(n+4) .mx_RoomSublist_resizeBox {
+  margin-bottom: -28px;
+  height: -webkit-fill-available !important;
+}
+
+.mx_RoomSublist .mx_RoomSublist_resizeBox .mx_RoomSublist_resizerHandle {
+  bottom: 28px !important;
+}
